@@ -13,8 +13,7 @@
 
     <?php
 
-    $datecreated = date("Y-d-m H:i:s");
-    $datemodification = $datecreated;
+  
 
     $nameErr = $priceErr = $photoErr = $descriptionErr = '';
     $name = $price = $photo = $description = '';
@@ -23,12 +22,16 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-  if (empty($_POST["name"])) {
-            $nameErr = "Masukkan deskripsi";
+        if (empty($_POST["name"])) {
+            $nameErr = "Masukkan nama";
         } else {
             $name = test_input($_POST["name"]);
             $valid_name = true;
-        }
+            if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
+                $nameErr = "Hanya huruf dan spasi diperbolehkan";
+                $valid_name = false;
+    }
+}
 
         // if (empty($_FILES["photo"])) {
         //     // $photoErr = "Pilih gambar";
@@ -84,7 +87,7 @@
         <br><br>
         Photo: <input type="file" name="file" accept="image/*">
         <br><br>
-        <form method="post" enctype="multipart/form-data" action="upload_foto,php">
+        <form method="post" enctype="multipart/form-data">
             <input type="submit" name="Upload" value="Upload">
         </form>
         <!-- <span class="error">* <?php echo $photoErr; ?></span> -->
@@ -103,6 +106,7 @@
         echo "<br>";
         echo $description;
         echo "<br>";
+
         if (isset($_POST['Upload'])) {
             $dir_upload = "images/";
             $nama_file = $_FILES['file']['name'];
@@ -120,7 +124,7 @@
             }
         }
 
-        // include "insert.php";
+        include "insert_table.php";
         // header('Location: login_tabel.php');
     }
     ?>
