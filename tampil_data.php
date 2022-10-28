@@ -48,7 +48,7 @@ $result = $conn->query($sql); ?>
                             <td><?= $row["name"] ?></td>
                             <td><?= $row["description"] ?></td>
                             <td><?= $row["price"] ?></td>
-                            <td><?php echo "<img src='images/$row[photo]' width='auto' height='90' />"; ?></td>
+                            <td><?php echo "<img src='images/$row[photo]' width='90' height='90' />"; ?></td>
                             <td><?= $row["created"] ?></td>
                             <td><?= $row["modified"] ?></td>
 
