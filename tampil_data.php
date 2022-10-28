@@ -2,8 +2,7 @@
 require "connect_db.php";
 
 $sql = "SELECT * FROM products";
-// $sql = "SELECT * FROM products";
-// WHERE role='Author' 
+
 $result = $conn->query($sql); ?>
 
 <!DOCTYPE html>
@@ -48,11 +47,11 @@ $result = $conn->query($sql); ?>
                             <td><?= $row["name"] ?></td>
                             <td><?= $row["description"] ?></td>
                             <td><?= $row["price"] ?></td>
-                            <td align="center"><?php echo "<img src='images/$row[photo]' width='auto' height='90' />";?></td>
+                            <td align="center"><?php echo "<img src='images/$row[photo]' width='auto' height='90' />"; ?></td>
                             <td><?= $row["created"] ?></td>
                             <td><?= $row["modified"] ?></td>
-                         
-                         
+
+
                         </tr> <?php
                             }
                                 ?>

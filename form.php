@@ -13,8 +13,6 @@
 
     <?php
 
-  
-
     $nameErr = $priceErr = $photoErr = $descriptionErr = '';
     $name = $price = $photo = $description = '';
     $valid_name = $valid_price = $valid_photo = $valid_description = false;
@@ -30,15 +28,8 @@
             if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
                 $nameErr = "Hanya huruf dan spasi diperbolehkan";
                 $valid_name = false;
-    }
-}
-
-        // if (empty($_FILES["photo"])) {
-        //     // $photoErr = "Pilih gambar";
-        // } else {
-        //     $photo = test_input($_FILES["photo"]);
-        //     $valid_photo = true;
-        // }
+            }
+        }
 
         if (empty($_POST["description"])) {
             $descriptionErr = "Masukkan deskripsi";
@@ -48,7 +39,7 @@
         }
 
         if (empty($_POST["price"])) {
-            $priceErr = "Price is required";
+            $priceErr = "Masukkan harga";
         } else {
             $price = test_input($_POST["price"]);
             if (!preg_match("/^[ 0-9]*$/", $price)) {
@@ -90,7 +81,7 @@
         <form method="post" enctype="multipart/form-data">
             <input type="submit" name="Upload" value="Upload">
         </form>
-        <!-- <span class="error">* <?php echo $photoErr; ?></span> -->
+
         <br><br>
 
 
@@ -100,10 +91,14 @@
     if ($valid_name && $valid_price && $valid_description  == true) {
         echo "<br>";
         echo "<h2>Your Input:</h2>";
+        echo "<br>";
+        echo  "Nama :";
         echo $name;
         echo "<br>";
-        echo $price;
+        echo "Harga :";
+        echo  $price;
         echo "<br>";
+        echo "Deskripsi :";
         echo $description;
         echo "<br>";
 
@@ -125,7 +120,6 @@
         }
 
         include "insert_table.php";
-        // header('Location: login_tabel.php');
     }
     ?>
 
