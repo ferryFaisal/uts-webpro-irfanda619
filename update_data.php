@@ -1,17 +1,19 @@
 <?php
 $nameErr = $priceErr = $photoErr = $descriptionErr = '';
-$name = $price = $photo = $description = '';
 $valid_name = $valid_price = $valid_photo = $valid_description = false;
 
-$modified = date("Y-d-m H:i:s");
+
 
 require 'connect_db.php';
 $sql = "SELECT * FROM products WHERE id = '$_GET[id]'";
 $result = $conn->query($sql);
+while ($row = $result->fetch_assoc()) {
+    $id1 = $_GET['id'];
+    $name = $row['name'];
+    $description = $row['description'];
+    $price = $row['price'];
+}
 
-$name = $row['name'];
-$name = $row['description'];
-$name = $row['price'];
 // $email1 = $_GET['email'];
 
 
@@ -35,23 +37,26 @@ $name = $row['price'];
 <body>
     <!-- <h1>Update data Database </h1>
     <form action="" method="post"> -->
-        <!-- Name :
+    <!-- Name :
         <input type="text" name="name" value="<?= $name ?>">
         <span class="error">* <?php echo $nameErr; ?></span>
         <br><br> -->
 
-        <!-- <input type="hidden" name="email" value="<?= $email1 ?>"> -->
+    <!-- <input type="hidden" name="email" value="<?= $email1 ?>"> -->
 
-        <h2>Shopping List</h2>
+    <h2>Shopping List</h2>
     <p><span class="error">* Required Field</span></p>
     <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        Name: <input type="text" name="name" value="<?php echo $name; ?>">
+        Name: <input type="text" name="name" value="<?= $name ?>">
         <span class="error">* <?php echo $nameErr; ?></span>
         <br><br>
-        Description: <textarea name="description" rows="5" cols="40"><?php echo $description; ?></textarea>
+
+        <input type="hidden" name="id" value="<?= $id1 ?>">
+
+        Description: <textarea name="description" rows="5" cols="40"><?= $description ?></textarea>
         <span class="error">* <?php echo $descriptionErr; ?></span>
         <br><br>
-        Price: <input type="text" name="price" value="<?php echo $price; ?>">
+        Price: <input type="text" name="price" value="<?= $price ?>">
         <span class="error">* <?php echo $priceErr; ?></span>
         <br><br>
         Photo: <input type="file" name="file" accept="image/*">
@@ -63,8 +68,8 @@ $name = $row['price'];
     </form>
 
 
-        <br><br>
-        <!-- <input type="submit" name="update" value="Update">
+    <br><br>
+    <!-- <input type="submit" name="update" value="Update">
     </form> -->
 
     <?php
@@ -112,22 +117,46 @@ $name = $row['price'];
 
     if ($valid_name && $valid_price && $valid_description  == true) {
 
-        $modified = date("Y-d-m H:i:s");
+        if (isset($_POST['Upload'])) {
+            $dir_upload = "images/";
+            $nama_file = $_FILES['file']['name'];
+            //
+            if (is_uploaded_file($_FILES['file']['tmp_name'])) {
+                $cek = move_uploaded_file(
+                    $_FILES['file']['tmp_name'],
+                    $dir_upload . $nama_file
+                );
+                if ($cek) {
+                    echo "Photo berhasil diupload";
+                } else {
+                    echo "Photo gagal diupload";
+                }
+            }
+        }
+
+        $modified = date ('Y-m-d H:i:s');
+        $photo = $nama_file;
 
         $sql1 = "UPDATE products SET 
                             name = '$name',
                             price = '$price',
+                            photo = '$photo',
                           description = '$description',
                             modified = '$modified'
+                      
                             where id = '$_POST[id]'";
         $result = $conn->query($sql1);
 
         if ($conn->query($sql1) === TRUE) {
             // echo "New record created successfully";
             header('Location: tampil_data.php');
+    
         } else {
             echo "Error: " . $sql1 . "<br>" . $conn->error;
         }
+
+
+      
     }
     $conn->close();
 

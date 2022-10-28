@@ -2,7 +2,7 @@
 
     require "connect_db.php";
 
-    $created = date ('Y-m-d H:i:s');
+ $create = date("Y-d-m H:i:s");
     $photo = $nama_file;
 
     $sql = "INSERT INTO `products`(`name`, `description`,`price`,`photo`,`created`) VALUES ('$name','$description','$price','$photo','$created')";

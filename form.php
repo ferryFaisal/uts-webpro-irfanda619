@@ -117,6 +117,7 @@
         }
 
         include "insert_table.php";
+        header('Location: tampil_data.php');
     }
     ?>
 

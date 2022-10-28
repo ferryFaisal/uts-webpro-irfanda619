@@ -51,6 +51,12 @@ $result = $conn->query($sql); ?>
                             <td><?= $row["created"] ?></td>
                             <td><?= $row["modified"] ?></td>
 
+                            <?php echo
+                            "<td>
+                           <a href='update_data.php?id=$row[id]'>Edit</a> |
+                           <a href='delete_data.php?id=$row[id]' onClick=\"return confirm('Anda yakin ingin menghapus data ini?');\"><center>Delete</a>
+                 </td>";
+                            ?>
 
                         </tr> <?php
                             }
