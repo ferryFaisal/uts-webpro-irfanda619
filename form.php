@@ -81,10 +81,7 @@
         <form method="post" enctype="multipart/form-data">
             <input type="submit" name="Upload" value="Upload">
         </form>
-
         <br><br>
-
-
     </form>
 
     <?php
