@@ -7,3 +7,9 @@ Tabel dapat dibuat dengan menjalankan file: create_table.php yang diberikan.
 Lakukan commit setiap menyelesaikan tahapan dalam koding Anda. Jangan lupa tuliskan message-nya.
 
 Selamat mengerjakan!
+
+
+
+Nama : Irfanda Anugerah
+Absen : 3202016068
+No Absen : 11
