@@ -23,14 +23,11 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        if (empty($_POST["name"])) {
-            $nameErr = "Masukkan nama";
+  if (empty($_POST["name"])) {
+            $nameErr = "Masukkan deskripsi";
         } else {
             $name = test_input($_POST["name"]);
             $valid_name = true;
-            if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
-                $nameErr = "Hanya huruf dan spasi diperbolehkan";
-            }
         }
 
         // if (empty($_FILES["photo"])) {
@@ -51,12 +48,12 @@
             $priceErr = "Price is required";
         } else {
             $price = test_input($_POST["price"]);
-            if (!preg_match("/^[ 0-9]*$/",$price)) {
+            if (!preg_match("/^[ 0-9]*$/", $price)) {
                 $priceErr = "Only number allowed";
-              } else{
+            } else {
                 $valid_price = true;
-             }
-}
+            }
+        }
     }
 
     function test_input($data)
@@ -75,7 +72,7 @@
 
     <h2>Shopping List</h2>
     <p><span class="error">* Required Field</span></p>
-    <form method="post"  enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+    <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         Name: <input type="text" name="name" value="<?php echo $name; ?>">
         <span class="error">* <?php echo $nameErr; ?></span>
         <br><br>
@@ -85,10 +82,14 @@
         Price: <input type="text" name="price" value="<?php echo $price; ?>">
         <span class="error">* <?php echo $priceErr; ?></span>
         <br><br>
-        Photo: <input type="file" name="photo" accept="image/*" enctype="multipart/form-data" value="<?php echo $photo; ?>">
+        Photo: <input type="file" name="file" accept="image/*">
+        <br><br>
+        <form method="post" enctype="multipart/form-data" action="upload_foto,php">
+            <input type="submit" name="Upload" value="Upload">
+        </form>
         <!-- <span class="error">* <?php echo $photoErr; ?></span> -->
         <br><br>
-        <input type="submit" name="submit" value="Upload">
+
 
     </form>
 
@@ -102,6 +103,23 @@
         echo "<br>";
         echo $description;
         echo "<br>";
+        if (isset($_POST['Upload'])) {
+            $dir_upload = "images/";
+            $nama_file = $_FILES['file']['name'];
+            //
+            if (is_uploaded_file($_FILES['file']['tmp_name'])) {
+                $cek = move_uploaded_file(
+                    $_FILES['file']['tmp_name'],
+                    $dir_upload . $nama_file
+                );
+                if ($cek) {
+                    echo "Photo berhasil diupload";
+                } else {
+                    echo "Photo gagal diupload";
+                }
+            }
+        }
+
         // include "insert.php";
         // header('Location: login_tabel.php');
     }
