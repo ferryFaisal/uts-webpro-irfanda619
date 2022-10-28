@@ -100,6 +100,14 @@
         echo "<br>";
 
         if (isset($_POST['Upload'])) {
+
+            $dir = "images"; 
+            $cek = mkdir($dir);
+            if ($cek) {
+                echo "Direktori <b>$dir</b> berhasil dibuat";
+            } else {
+            }
+            
             $dir_upload = "images/";
             $nama_file = $_FILES['file']['name'];
             //
