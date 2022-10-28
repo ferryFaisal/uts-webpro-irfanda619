@@ -35,6 +35,7 @@ $result = $conn->query($sql); ?>
                     <th>Photo</th>
                     <th>Created</th>
                     <th>Modified</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody> <?php
@@ -47,14 +48,14 @@ $result = $conn->query($sql); ?>
                             <td><?= $row["name"] ?></td>
                             <td><?= $row["description"] ?></td>
                             <td><?= $row["price"] ?></td>
-                            <td align="center"><?php echo "<img src='images/$row[photo]' width='auto' height='90' />"; ?></td>
+                            <td><?php echo "<img src='images/$row[photo]' width='auto' height='90' />"; ?></td>
                             <td><?= $row["created"] ?></td>
                             <td><?= $row["modified"] ?></td>
 
                             <?php echo
                             "<td>
-                           <a href='update_data.php?id=$row[id]'>Edit</a> |
-                           <a href='delete_data.php?id=$row[id]' onClick=\"return confirm('Anda yakin ingin menghapus data ini?');\"><center>Delete</a>
+                           <a href='update_data.php?id=$row[id]'>Edit</a> | <a href='delete_data.php?id=$row[id]' onClick=\"return confirm('Anda yakin ingin menghapus data ini?');\">Delete</a>
+                    
                  </td>";
                             ?>
 
