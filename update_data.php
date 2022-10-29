@@ -1,4 +1,7 @@
 <?php
+
+
+$name = $price = $photo = $description = '';
 $nameErr = $priceErr = $photoErr = $descriptionErr = '';
 $valid_name = $valid_price = $valid_photo = $valid_description = false;
 
@@ -8,10 +11,20 @@ require 'connect_db.php';
 $sql = "SELECT * FROM products WHERE id = '$_GET[id]'";
 $result = $conn->query($sql);
 while ($row = $result->fetch_assoc()) {
-    $id1 = $_GET['id'];
+    if (isset($_GET['id'])) {
+        $id1 = $_GET['id'];
+    }
+    // $id1 =     $_GET["id"];
     $name = $row['name'];
     $description = $row['description'];
     $price = $row['price'];
+
+ 
+
+
+    // $_POST["id"] =  $id1;
+
+
 }
 
 // $email1 = $_GET['email'];
@@ -19,62 +32,75 @@ while ($row = $result->fetch_assoc()) {
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+
+
+
+<!DOCTYPE HTML>
+<html>
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Registrasi</title>
+    <title>Document</title>
     <style>
         .error {
             color: #FF0000;
         }
+
+        html {
+
+            margin: 50px;
+        }
     </style>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 
 <body>
-    <!-- <h1>Update data Database </h1>
-    <form action="" method="post"> -->
-    <!-- Name :
-        <input type="text" name="name" value="<?= $name ?>">
-        <span class="error">* <?php echo $nameErr; ?></span>
-        <br><br> -->
 
-    <!-- <input type="hidden" name="email" value="<?= $email1 ?>"> -->
+    <div class="container " style="width: 50%;">
+        <h2><strong>Products</strong><span class="error">Update</span></strong> <a class="btn btn-outline-danger float-end" href="form.php">Tambah data</a></h2> <br>
+        <!-- <p><span class="error">* Required Field</span></p> -->
+        <form class="form-group" method="post" enctype="multipart/form-data" action="">
 
-    <h2>Shopping List</h2>
-    <p><span class="error">* Required Field</span></p>
-    <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        Name: <input type="text" name="name" value="<?= $name ?>">
-        <span class="error">* <?php echo $nameErr; ?></span>
-        <br><br>
+            <input type="hidden" name="id" value="<?php echo $id1 ?>">
+            
+            Name: <br><input class="form-control" type="text" name="name" value="<?= $name ?>">
+            <span class="error"><?php print $nameErr; ?></span>
+            <br>
 
-        <input type="hidden" name="id" value="<?= $id1 ?>">
+            Description: <br><textarea class="form-control" name="description" rows="5" cols="40"><?= $description ?></textarea>
+            <span class="error"><?php echo $descriptionErr; ?></span>
+            <br>
 
-        Description: <textarea name="description" rows="5" cols="40"><?= $description ?></textarea>
-        <span class="error">* <?php echo $descriptionErr; ?></span>
-        <br><br>
-        Price: <input type="text" name="price" value="<?= $price ?>">
-        <span class="error">* <?php echo $priceErr; ?></span>
-        <br><br>
-        Photo: <input type="file" name="file" accept="image/*">
-        <br><br>
-        <form method="post" enctype="multipart/form-data">
-            <input type="submit" name="Upload" value="Upload">
+            Price: <br><input class="form-control" type="text" name="price" value="<?= $price ?>">
+            <span class="error"><?php echo $priceErr; ?></span>
+            <br>
+
+            Photo: <input class="form-control" type="file" name="file" accept="image/*" >
+            <br><br>
+            <!-- <form method="post" enctype="multipart/form-data" class="btn btn-primary"> -->
+            <input type="submit" class="btn btn-danger float-start " name="Upload" value="Upload"><a class="btn btn-danger float-end" href="tampil_data.php">Batal</a>
+            <!-- </form> -->
+            <br><br>
         </form>
-        <br><br>
-    </form>
+    </div>
 
 
     <br><br>
     <!-- <input type="submit" name="update" value="Update">
     </form> -->
 
-    <?php
 
+
+    <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        if (empty($_POST['id'])) {
+            $id1 = $_GET['id'];
+        }
+
 
         if (empty($_POST["name"])) {
             $nameErr = "Masukkan nama";
@@ -92,6 +118,13 @@ while ($row = $result->fetch_assoc()) {
         } else {
             $description = test_input($_POST["description"]);
             $valid_description = true;
+        }
+
+        if (empty($_POST["photo"])) {
+            $photoErr = "Pilih foto";
+        } else {
+            $photo = test_input($_POST["photo"]);
+            // $valid_description = true;
         }
 
         if (empty($_POST["price"])) {
@@ -114,10 +147,21 @@ while ($row = $result->fetch_assoc()) {
         $data = htmlspecialchars($data);
         return $data;
     }
+    ?>
 
+
+    <?php
     if ($valid_name && $valid_price && $valid_description  == true) {
 
         if (isset($_POST['Upload'])) {
+
+            if (file_exists("images")){
+                  echo "";
+            } else {
+                 $dir = "images";
+            $cek = mkdir($dir);
+            }
+          
             $dir_upload = "images/";
             $nama_file = $_FILES['file']['name'];
             //
@@ -127,40 +171,15 @@ while ($row = $result->fetch_assoc()) {
                     $dir_upload . $nama_file
                 );
                 if ($cek) {
-                    echo "Photo berhasil diupload";
+               
                 } else {
-                    echo "Photo gagal diupload";
+       
                 }
             }
         }
-
-        $modified = date ('Y-m-d H:i:s');
-        $photo = $nama_file;
-
-        $sql1 = "UPDATE products SET 
-                            name = '$name',
-                            price = '$price',
-                            photo = '$photo',
-                          description = '$description',
-                            modified = '$modified'
-                      
-                            where id = '$_POST[id]'";
-        $result = $conn->query($sql1);
-
-        if ($conn->query($sql1) === TRUE) {
-            // echo "New record created successfully";
-            header('Location: tampil_data.php');
-    
-        } else {
-            echo "Error: " . $sql1 . "<br>" . $conn->error;
-        }
-
-
-      
+        include "update_table.php";
+        header('Location: tampil_data.php');
     }
-    $conn->close();
-
-
     ?>
 
 </body>
